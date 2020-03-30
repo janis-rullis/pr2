@@ -14,13 +14,13 @@ services:
             - './php:/var/www:rw'
         networks:
             pr2-net:
-                ipv4_address: 172.70.3.11
-    urler-mysql:
+                ipv4_address: 172.71.3.11
+    pr2-mysql:
         container_name: pr2-mysql
         image: 'mariadb:10.3.22-bionic'
         restart: unless-stopped
         ports:
-            - '3306:3306'
+            - '33713:3306'
         volumes:
             - type: bind
               source: ./db/mysql
@@ -32,13 +32,13 @@ services:
             TZ: Europe/Riga
             LANG: en_US.UTF-8
             MYSQL_ROOT_PASSWORD: $MYSQL_PASSWORD
-            MYSQL_USER: urler-user
+            MYSQL_USER: pr2-user
             MYSQL_PASSWORD: $MYSQL_PASSWORD
             INIT_TOKUDB: 1
             INIT_ROCKSDB: 0
         networks:
             pr2-net:
-                ipv4_address: 172.70.3.13
+                ipv4_address: 172.71.3.13
         command: '--sql-mode= --server-id=1 --log-bin=mysql-bin --expire_logs_days=3'
     pr2-pma:
         container_name: pr2-pma
@@ -48,16 +48,16 @@ services:
         - pr2-mysql
         environment:
             MYSQL_ROOT_PASSWORD: $MYSQL_PASSWORD
-            MYSQL_USER: urler-user
+            MYSQL_USER: pr2-user
             MYSQL_PASSWORD: $MYSQL_PASSWORD
             PMA_HOST: pr2-mysql  
             PMA_PORT: 3306
         networks:
             pr2-net:
-                ipv4_address: 172.70.3.14
+                ipv4_address: 172.71.3.14
 networks:
     pr2-net:
         ipam:
             driver: default
             config:
-                - subnet: 172.70.3.0/16
+                - subnet: 172.71.3.0/24
