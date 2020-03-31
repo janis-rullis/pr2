@@ -1,5 +1,19 @@
 version: '3.6'
 services:
+    pr2-nginx:
+        container_name: pr2-nginx
+        build:
+            context: ./nginx
+            dockerfile: Dockerfile
+        restart: unless-stopped
+        volumes:
+            - './nginx:/var/www:rw'
+        networks:
+            pr2-net:
+                ipv4_address: 172.71.3.10
+        ports:
+            - 80:80
+            - 443:443
     pr2-php:
         container_name: pr2-php
         build:
@@ -7,20 +21,20 @@ services:
             dockerfile: Dockerfile
         restart: unless-stopped
         depends_on:
-            - pr2-pma            
+            - pr2-pma
         volumes:
             - './php:/var/www:rw'
         networks:
             pr2-net:
                 ipv4_address: 172.71.3.11
         ports:
-            - '80:80'
+            - '1311:80'
     pr2-mysql:
         container_name: pr2-mysql
         image: 'mariadb:10.3.22-bionic'
         restart: unless-stopped
         ports:
-            - '33713:3306'
+            - '1313:3306'
         volumes:
             - type: bind
               source: ./db/mysql
@@ -45,6 +59,7 @@ services:
         image: 'phpmyadmin/phpmyadmin'
         restart: always
         depends_on:
+        - pr2-nginx
         - pr2-mysql
         environment:
             MYSQL_ROOT_PASSWORD: $MYSQL_PASSWORD
@@ -53,7 +68,7 @@ services:
             PMA_HOST: pr2-mysql  
             PMA_PORT: 3306
         ports:
-            - '8080:80'
+            - '1314:80'
         networks:
             pr2-net:
                 ipv4_address: 172.71.3.14

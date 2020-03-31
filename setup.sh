@@ -15,6 +15,7 @@ function init(){
 	# https://unix.stackexchange.com/a/164548 You can preserve newlines in the .env.
 	IFS=$''
 	DIR=$PWD;
+  DIR_NGINX="${DIR}/nginx";
   DIR_PHP="${DIR}/php";
   DIR_PHP_NGINX="${DIR_PHP}/build/nginx";
 	ROOT_DIR="$(dirname "${DIR}")";
@@ -62,8 +63,17 @@ function readEnvVariables(){
 }
 
 # #7 Set domains from .env.
-function setPhpNginxVariables(){
+function setNginxVariables(){
   echo "Set php NGINX variables...";
+
+  echo "Go into '${DIR_NGINX}' direcotry...";
+  cd $DIR_NGINX
+
+  echo "Copying '.site.conf.example' to 'site.conf'...";
+  cp .site.conf.example site.conf
+
+  echo "Fill variables collected from the master '.env'...";
+  sed -i -e "s/FILL_DOMAIN/${DOMAIN}/g" site.conf
 
   echo "Go into '${DIR_PHP_NGINX}' direcotry...";
   cd $DIR_PHP_NGINX
@@ -103,7 +113,7 @@ checkRequirements
 initDb
 stopDocker
 readEnvVariables
-setPhpNginxVariables
+setNginxVariables
 setPhpEnv
 echo "Setup is completed."
 echo "Starting the project.."
