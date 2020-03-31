@@ -3,9 +3,13 @@
 /.env.local.php
 /.env.*.local
 /public/bundles/
-/public/img/
+
 public/img/*
-!public/.gitkeep
+!public/img/.gitkeep
+
+build/nginx/*
+!build/nginx/.site.conf.example
+
 /var/
 /vendor/
 /bin/.phpunit

@@ -15,6 +15,8 @@ function init(){
 	# https://unix.stackexchange.com/a/164548 You can preserve newlines in the .env.
 	IFS=$''
 	DIR=$PWD;
+  DIR_PHP="${DIR}/php";
+  DIR_PHP_NGINX="${DIR_PHP}/build/nginx";
 	ROOT_DIR="$(dirname "${DIR}")";
   ENV_FILE=".env";
 }
@@ -52,24 +54,41 @@ function initDb(){
 function readEnvVariables(){
 	echo "Reading .env variables...";
 	ENV_VARS=`cat ${ENV_FILE}`
-	DB_PW=`echo ${ENV_VARS} | grep MYSQL_PASSWORD= | cut -d '=' -f2`;  
+	DB_PW=`echo ${ENV_VARS} | grep MYSQL_PASSWORD= | cut -d '=' -f2`;
+  DOMAIN=`echo ${ENV_VARS} | grep DOMAIN= | cut -d '=' -f2`;
 
   # https://superuser.com/questions/1225134/why-does-the-base64-of-a-string-contain-n/1225139
   SECRET=`openssl rand -hex 32  | tr -d \\n`
 }
 
-# #5 Dockerize the pr2-php.
+# #7 Set domains from .env.
+function setNginxVariables(){
+  ecbo "Set NGINX variables...";
+
+  echo "Go into '${DIR_PHP_NGINX}' direcotry...";
+  cd $DIR_PHP_NGINX
+
+  echo "Copying '.site.conf.example' to 'site.conf'...";
+  cp .site.conf.example site.conf
+
+  echo "Fill variables collected from the master '.env'...";
+  sed -i -e "s/FILL_DOMAIN/\${DOMAIN}\/g" site.conf
+
+  cd $DIR;
+}
+
+# Dockerize the pr2-php.
 function setPhpEnv(){
 	echo "Setting up the 'pr2-php' container."
-	echo "Go into 'php' direcotry...";
-	cd php
+	echo "Go into '${DIR_PHP}' direcotry...";
+  cd $DIR_PHP;
 	echo "Copying '.env.example' to '.env'...";
 	cp .env.example .env
 
 	echo "Fill variables collected from the master '.env'...";
 
 	sed -i -e "s/FILL_DB_PASSWORD/$DB_PW/g" .env  
-  sed -i -e "s/FILL_APP_SECRET/\"${SECRET}\"/g" .env  
+  sed -i -e "s/FILL_APP_SECRET/\"${SECRET}\"/g" .env
   
 	cd $DIR;
 	echo "'.env' is ready.";

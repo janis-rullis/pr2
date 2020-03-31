@@ -3,7 +3,7 @@ server {
     listen [::]:80;
     root /var/www/public;
     index  index.php index.html index.htm;
-    server_name  pr2.local;
+    server_name FILL_DOMAIN;
 
 	#4 #5 Take NGINX conf from https://github.com/janis-rullis/nginx
      client_max_body_size 100M;

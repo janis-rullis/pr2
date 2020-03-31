@@ -8,8 +8,6 @@ services:
         restart: unless-stopped
         depends_on:
             - pr2-pma            
-        environment:            
-            VIRTUAL_HOST: pr2.local
         volumes:
             - './php:/var/www:rw'
         networks:
