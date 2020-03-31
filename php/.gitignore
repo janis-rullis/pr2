@@ -4,8 +4,8 @@
 /.env.*.local
 /public/bundles/
 
-public/img/*
-!public/img/.gitkeep
+public/i/*
+!public/i/.gitkeep
 
 build/nginx/*
 !build/nginx/.site.conf.example
