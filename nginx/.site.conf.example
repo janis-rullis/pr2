@@ -1,18 +1,15 @@
 server {
-    listen 80;
-    listen [::]:80;
     server_name FILL_DOMAIN;
 
     location / {
-        proxy_pass http://172.71.3.11:1311;
+        proxy_pass http://172.71.3.11;
     }
 }
+
 server {
-    listen 80;
-    listen [::]:80;
     server_name pma.FILL_DOMAIN;
 
     location / {
-        proxy_pass http://172.71.3.14:1314;
+        proxy_pass http://172.71.3.14;
     }
 }
