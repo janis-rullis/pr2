@@ -62,8 +62,8 @@ function readEnvVariables(){
 }
 
 # #7 Set domains from .env.
-function setNginxVariables(){
-  ecbo "Set NGINX variables...";
+function setPhpNginxVariables(){
+  echo "Set php NGINX variables...";
 
   echo "Go into '${DIR_PHP_NGINX}' direcotry...";
   cd $DIR_PHP_NGINX
@@ -72,7 +72,7 @@ function setNginxVariables(){
   cp .site.conf.example site.conf
 
   echo "Fill variables collected from the master '.env'...";
-  sed -i -e "s/FILL_DOMAIN/\${DOMAIN}\/g" site.conf
+  sed -i -e "s/FILL_DOMAIN/${DOMAIN}/g" site.conf
 
   cd $DIR;
 }
@@ -103,6 +103,7 @@ checkRequirements
 initDb
 stopDocker
 readEnvVariables
+setPhpNginxVariables
 setPhpEnv
 echo "Setup is completed."
 echo "Starting the project.."
