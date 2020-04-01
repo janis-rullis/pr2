@@ -29,8 +29,8 @@ It will download, install and prepare all the required software.
 This transletes the machines address to the domain-name.
 
 ```
-172.71.3.11     pr2.local
-172.71.3.14     pma.pr2.local
+172.71.3.10     pr2.local
+172.71.3.10     pma.pr2.local
 ```
 
 ## Already set-up?
