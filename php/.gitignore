@@ -1,8 +1,5 @@
-/.env.test
-/.env.local
-/.env.local.php
-/.env.*.local
-/public/bundles/
+/.env
+/.env.php
 
 public/i/*
 !public/i/.gitkeep

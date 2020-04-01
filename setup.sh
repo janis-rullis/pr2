@@ -91,21 +91,20 @@ function setNginxVariables(){
 function setPhpEnv(){
 	echo "Setting up the 'pr2-php' container."
 	echo "Go into '${DIR_PHP}' direcotry...";
-  cd $DIR_PHP;
-	echo "Copying '.env.example' to '.env'...";
-	cp .env.example .env
+	cd $DIR_PHP;
+	echo "Copying '.env.php.example' to '.env.php'...";
+	cp .env.php.example .env.php
 
 	echo "Fill variables collected from the master '.env'...";
 
-	sed -i -e "s/FILL_DB_PASSWORD/$DB_PW/g" .env  
-  sed -i -e "s/FILL_APP_SECRET/\"${SECRET}\"/g" .env
+	sed -i -e "s/FILL_DB_PASSWORD/$DB_PW/g" .env.php
   
 	cd $DIR;
-	echo "'.env' is ready.";
+	echo "'.env.php' is ready.";
 
-  echo "Initialize a clean API container first ...";
-  docker-compose build --no-cache pr2-php
-  docker-compose down --remove-orphans 
+	echo "Initialize a clean API container first ...";
+	docker-compose build --no-cache pr2-php
+	docker-compose down --remove-orphans 
 }
 
 init
